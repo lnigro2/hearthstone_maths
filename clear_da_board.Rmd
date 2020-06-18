@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#stores the final state results
+final_states <- c()
+#choose number of simulations to run
+n = 10000
+
+#initiate the simulations
+for (j in seq(1, n)){
+  #set the health of the remaining characters
+  min1 = 1
+  min2 = 2
+  face = 14
+  #set the amount of damage that will be dealt out randomly
+  damage = 6
+
+  #create the list of potential targets
+  targets <- list('min1', 'min2', 'face')
+  
+  #simulate the damage being dealt
+  while (damage > 0) {
+    #randomly chooses a target from the list of targets
+    target <- sample(targets, 1)
+    
+    #lowers the health of the randomly chosen target by 1
+    if (target == 'min1') {
+      min1 = min1 - 1
+    } else if (target == 'min2') {
+      min2 = min2 - 1
+    } else {
+      face = face - 1
+    }
+    
+    #makes sure that once a target's health is set to 0, they are no longer a valid target
+    if (min1 == 0) {
+      targets <- targets[targets != 'min1']
+    }
+    
+    if (min2 == 0) {
+      targets <- targets[targets != 'min2']
+    }
+    #increments the amount of damage left
+    damage = damage - 1
+  }
+  #captures the number of targets remaining after simulation
+  final_states[j] <- length(targets)
+}
+
+#print the results of the simulations
+table(final_states)
+```
